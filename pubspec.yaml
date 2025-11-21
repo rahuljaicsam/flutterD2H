@@ -24,6 +24,7 @@ dependencies:
   firebase_auth: ^4.15.3
   firebase_messaging: ^14.7.10
   firebase_storage: ^11.5.6
+  cloud_firestore: ^4.9.5
   
   # Add other required packages
   go_router: ^12.1.3

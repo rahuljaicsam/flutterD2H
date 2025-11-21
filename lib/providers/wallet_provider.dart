@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class WalletProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   List<Payment> _payments = [];
   double _totalEarnings = 0.0;
   double _pendingEarnings = 0.0;
@@ -80,9 +80,8 @@ class WalletProvider extends ChangeNotifier {
         .collection('payments')
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Payment.fromMap(doc.data()))
-            .toList());
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Payment.fromMap(doc.data())).toList());
   }
 
   Future<bool> addPaymentFromBooking(Booking booking) async {
@@ -94,7 +93,12 @@ class WalletProvider extends ChangeNotifier {
       if (user == null) return false;
 
       final payment = Payment(
-        id: _firestore.collection('providers').doc(user.uid).collection('payments').doc().id,
+        id: _firestore
+            .collection('providers')
+            .doc(user.uid)
+            .collection('payments')
+            .doc()
+            .id,
         bookingId: booking.id,
         amount: booking.amount,
         type: PaymentType.earning,
@@ -122,7 +126,8 @@ class WalletProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> updatePaymentStatus(String paymentId, PaymentStatus status) async {
+  Future<bool> updatePaymentStatus(
+      String paymentId, PaymentStatus status) async {
     try {
       _setLoading(true);
       _errorMessage = null;
@@ -137,7 +142,8 @@ class WalletProvider extends ChangeNotifier {
           .doc(paymentId)
           .update({
         'status': status.toString().split('.').last,
-        'processedAt': status == PaymentStatus.completed ? Timestamp.now() : null,
+        'processedAt':
+            status == PaymentStatus.completed ? Timestamp.now() : null,
       });
 
       await _loadWalletData();
@@ -158,7 +164,7 @@ class WalletProvider extends ChangeNotifier {
     return _payments.where((payment) {
       final paymentDate = payment.createdAt;
       return paymentDate.isAfter(start.subtract(const Duration(days: 1))) &&
-             paymentDate.isBefore(end.add(const Duration(days: 1)));
+          paymentDate.isBefore(end.add(const Duration(days: 1)));
     }).toList();
   }
 
@@ -171,14 +177,16 @@ class WalletProvider extends ChangeNotifier {
 
   Map<String, double> getMonthlyEarnings() {
     final Map<String, double> monthlyEarnings = {};
-    
+
     for (final payment in _payments) {
       if (payment.status == PaymentStatus.completed) {
-        final monthKey = '${payment.createdAt.year}-${payment.createdAt.month.toString().padLeft(2, '0')}';
-        monthlyEarnings[monthKey] = (monthlyEarnings[monthKey] ?? 0.0) + payment.amount;
+        final monthKey =
+            '${payment.createdAt.year}-${payment.createdAt.month.toString().padLeft(2, '0')}';
+        monthlyEarnings[monthKey] =
+            (monthlyEarnings[monthKey] ?? 0.0) + payment.amount;
       }
     }
-    
+
     return monthlyEarnings;
   }
 
@@ -192,9 +200,9 @@ class WalletProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void refreshWallet() {
+  Future<void> refreshWallet() async {
     if (_auth.currentUser != null) {
-      _loadWalletData();
+      await _loadWalletData();
     }
   }
 }

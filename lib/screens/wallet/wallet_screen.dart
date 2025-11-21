@@ -56,7 +56,9 @@ class _WalletScreenState extends State<WalletScreen>
 
   Widget _buildOverviewTab(WalletProvider walletProvider) {
     return RefreshIndicator(
-      onRefresh: () => walletProvider.refreshWallet(),
+      onRefresh: () async {
+        await walletProvider.refreshWallet();
+      },
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -207,8 +209,10 @@ class _WalletScreenState extends State<WalletScreen>
                 itemBuilder: (context, index) {
                   final month = sortedMonths[index];
                   final earnings = monthlyEarnings[month]!;
-                  final maxEarnings = monthlyEarnings.values.reduce((a, b) => a > b ? a : b);
-                  final barHeight = maxEarnings > 0 ? (earnings / maxEarnings) * 150 : 0;
+                  final maxEarnings =
+                      monthlyEarnings.values.reduce((a, b) => a > b ? a : b);
+                  final barHeight =
+                      maxEarnings > 0 ? (earnings / maxEarnings) * 150 : 0;
 
                   return Padding(
                     padding: const EdgeInsets.only(right: 16),
@@ -216,7 +220,7 @@ class _WalletScreenState extends State<WalletScreen>
                       children: [
                         Container(
                           width: 40,
-                          height: barHeight,
+                          height: barHeight.toDouble(),
                           decoration: BoxDecoration(
                             color: const Color(0xFF4A90E2),
                             borderRadius: BorderRadius.circular(4),
@@ -282,13 +286,16 @@ class _WalletScreenState extends State<WalletScreen>
 
   Widget _buildTransactionsTab(WalletProvider walletProvider) {
     return RefreshIndicator(
-      onRefresh: () => walletProvider.refreshWallet(),
+      onRefresh: () async {
+        await walletProvider.refreshWallet();
+      },
       child: walletProvider.payments.isEmpty
           ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.account_balance_wallet, size: 64, color: Colors.grey),
+                  Icon(Icons.account_balance_wallet,
+                      size: 64, color: Colors.grey),
                   SizedBox(height: 16),
                   Text(
                     'No transactions yet',
@@ -403,11 +410,21 @@ class _WalletScreenState extends State<WalletScreen>
   String _formatMonth(String monthString) {
     final parts = monthString.split('-');
     if (parts.length == 2) {
-      final year = parts[0];
       final month = parts[1];
       final monthNames = [
-        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        '',
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ];
       return monthNames[int.parse(month)];
     }

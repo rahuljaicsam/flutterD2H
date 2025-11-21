@@ -1,86 +1,199 @@
-# Flutter on Codespaces
+# Doctor2Home Provider App
 
-This is a template repository for developing with [Flutter](https://flutter.dev/) on the web on [GitHub Codespaces](https://github.com/features/codespaces).
+A Flutter mobile application for healthcare providers (doctors, nurses, and physiotherapists) to manage home referral bookings, track earnings, and provide real-time location services.
 
-Flutter is a cross-platform UI framework by Google for building apps. Codespaces is a cloud-based development environment that lets you run a full-featured IDE in the cloud. This template repository lets you get started with Flutter on Codespaces in just a few clicks.
+## Features
 
-**Table of Contents**
-- [Important things to note](#important-things-to-note)
-- [Setup](#setup)
-  - [Getting started](#getting-started)
-  - [Using a sample](#using-a-sample)
-- [Development Environment](#development-environment)
-  - [Developing in the browser](#developing-in-the-browser)
-  - [Developing in the desktop app](#developing-in-the-desktop-app)
-- [Flutter Development](#flutter-development)
-  - [Developing for mobile](#developing-for-mobile)
-- [Codespaces Usage](#codespaces-usage)
-  - [Managing your codespace](#managing-your-codespace)
+### 🔐 Authentication & Profile
+- **Secure Registration**: Provider signup with license verification
+- **Profile Management**: Update personal and professional information
+- **License Verification**: Medical license verification status display
+- **Profile Pictures**: Upload and manage provider profile images
 
-This repository is generated from the [dilanx/flutter-codespaces](https://github.com/dilanx/flutter-codespaces) repository.
+### 📅 Booking Management
+- **Real-time Notifications**: Instant alerts for new booking requests
+- **Accept/Decline Bookings**: Quick action buttons for booking management
+- **Booking Details**: Comprehensive view of patient information and service details
+- **Booking Status Tracking**: Pending, Accepted, In Progress, Completed status
+- **Booking History**: Complete history of all bookings with filters
 
-## Important things to note
+### 💰 Wallet & Earnings
+- **Earnings Dashboard**: Total earnings, available balance, and pending payments
+- **Transaction History**: Detailed view of all payments and transactions
+- **Monthly Analytics**: Visual representation of monthly earnings
+- **Payment Status**: Track pending and completed payments
 
-Codespaces is not completely free. Free users have 120 core-hours per month and Pro users have 180 core-hours per month. The default codespace runs on a 2-core machine, so that's 60 hours (or 90 hours) of free usage per month before getting charged. Make sure to stop your codespace when you're not using it (it automatically stops after 30 minutes of inactivity by default). See more pricing details [here](https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces), and manage your active codespaces [here](https://github.com/codespaces).
+### 🗺️ Live Map Integration
+- **OpenStreetMap Integration**: Real-time location tracking
+- **Navigation Support**: Navigate to patient locations
+- **Active Bookings Display**: Visual representation of active bookings on map
+- **Route Planning**: Show routes to patient addresses
 
-## Setup
+### 🔔 Notification System
+- **Push Notifications**: Firebase Cloud Messaging integration
+- **Booking Alerts**: Real-time notifications for new bookings
+- **Payment Notifications**: Alerts for completed payments
+- **Local Notifications**: In-app notification management
 
-### Getting started
+## Tech Stack
 
-1. Press "Use this template" towards the top right of this repository and create a new repository from this template.
+- **Flutter**: Cross-platform mobile development
+- **Firebase**: Authentication, Firestore database, Cloud Messaging, Storage
+- **OpenStreetMap**: Map integration with flutter_map
+- **Provider**: State management
+- **Go Router**: Navigation and routing
+- **Local Notifications**: Native notification support
 
-    > There's also an option to open this repository in Codespaces and publish it to GitHub later from there, but I recommend creating your own repository first.
+## Getting Started
 
-2. In your new repository, press "Code", select "Codespaces", then press "Create codespace on main". A container with everything you need to get started will be created automatically, then you'll be taken to your new codespace (VS Code in your browser). If you'd prefer to work on your codespace using the VS Code desktop app instead of the browser app, you can follow these instructions.
+### Prerequisites
+- Flutter SDK (>=3.0.0)
+- Dart SDK
+- Android Studio / Xcode
+- Firebase project setup
 
-3. Press the "Extensions" icon in the left sidebar. You'll see that the Flutter and Dart extensions are already being installed. The environment won't work properly until the installation is complete, so wait for it to finish.
+### Installation
 
-4. In your integrated terminal (the TERMINAL tab), run `flutter pub get` to install the missing Flutter dependencies.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd doctor2homeprovider
+   ```
 
-5. In the ports view (the PORTS tab), port 3000 should be listed there already. Right click on it, and, under "Port Visibility", select "Public". This is important so the app can access services on your client from other server ports without getting blocked due to CORS.
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
 
-6. Run `./run.sh` in the terminal to start the app. A notification will appear saying that an app opened on port 3000. You can press "Open in Browser" to open it, but it won't load until the terminal shows that it's ready. You can refresh once the app is loaded (as indicated by a prompt to press "R" to reload).
+3. **Firebase Setup**
+   - Create a new Firebase project
+   - Enable Authentication, Firestore, Cloud Messaging, and Storage
+   - Download configuration files:
+     - Android: `google-services.json` → `android/app/`
+     - iOS: `GoogleService-Info.plist` → `ios/Runner/`
+   - Update `firebase_options.dart` with your Firebase configuration
 
-    > You can find the link to access the app in your browser at any time by going to the ports view, right clicking on port 3000, and pressing "Open in Browser".
+4. **Platform Configuration**
 
-7. That's it! Make changes in `lib/main.dart`, press "R" in the terminal, then refresh the page to see your changes appear quickly.
+   **Android:**
+   - Update `android/app/src/main/AndroidManifest.xml` with your package name
+   - Ensure all permissions are properly configured
 
-### Using a sample
+   **iOS:**
+   - Update `ios/Runner/Info.plist` with your bundle identifier
+   - Configure location and camera permissions
 
-There are a collection of sample Flutter apps you can use. They're stored in the `samples` directory. If you want to use one of them, find the folder of the sample you want to use, then move the contents of the folder into the root of your repository. At minimum, this should overwrite `pubspec.yaml` and `lib`.
+5. **Run the app**
+   ```bash
+   flutter run
+   ```
 
-## Development Environment
+## Project Structure
 
-### Developing in the browser
+```
+lib/
+├── app/
+│   └── app.dart                 # Main app configuration and routing
+├── models/
+│   ├── booking_model.dart       # Booking data model
+│   └── provider_model.dart     # Healthcare provider data model
+├── providers/
+│   ├── auth_provider.dart       # Authentication state management
+│   ├── booking_provider.dart    # Booking management state
+│   └── wallet_provider.dart     # Wallet and earnings state
+├── screens/
+│   ├── auth/
+│   │   ├── login_screen.dart    # Login screen
+│   │   └── register_screen.dart # Registration screen
+│   ├── booking/
+│   │   ├── booking_card.dart    # Booking card widget
+│   │   ├── booking_detail_screen.dart # Booking details
+│   │   └── booking_list_screen.dart   # Bookings list
+│   ├── home/
+│   │   └── home_screen.dart     # Dashboard/home screen
+│   ├── map/
+│   │   └── live_map_screen.dart # Live map view
+│   ├── profile/
+│   │   └── profile_screen.dart  # Profile management
+│   ├── wallet/
+│   │   └── wallet_screen.dart   # Wallet and earnings
+│   └── splash_screen.dart       # Splash screen
+├── services/
+│   └── notification_service.dart # Notification management
+├── widgets/
+│   └── bottom_nav_bar.dart      # Bottom navigation
+├── main.dart                    # App entry point
+└── firebase_options.dart        # Firebase configuration
+```
 
-The browser-based VS Code is the default editor for Codespaces, and has most of the features you'd need. Opening your codespace from [github.com/codespaces](https://github.com/codespaces) will automatically open the browser-based editor.
+## Key Features Implementation
 
-### Developing in the desktop app
+### Authentication Flow
+1. **Registration**: Collect provider details, license information, and specialization
+2. **Email Verification**: Firebase email verification for account activation
+3. **License Verification**: Admin verification process for medical licenses
+4. **Secure Login**: Firebase Authentication with email/password
 
-If you'd prefer to use the desktop app version of VS Code, you can follow these instructions:
+### Booking System
+1. **Real-time Updates**: Firestore listeners for instant booking notifications
+2. **Status Management**: Comprehensive booking status tracking
+3. **Location Services**: GPS integration for navigation
+4. **Communication**: Direct patient contact through phone integration
 
-1. Download the [VS Code desktop app](https://code.visualstudio.com/). You probably already have it if you chose to follow these instructions.
+### Wallet System
+1. **Payment Processing**: Automatic payment addition upon booking completion
+2. **Earnings Tracking**: Real-time earnings calculation and display
+3. **Transaction History**: Complete payment history with status tracking
+4. **Analytics**: Monthly earnings visualization
 
-2. Install the [GitHub Codespaces extension](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces).
+### Map Integration
+1. **OpenStreetMap**: Free and open-source map tiles
+2. **Real-time Location**: GPS tracking for provider location
+3. **Route Planning**: Visual route display to patient locations
+4. **Booking Markers**: Visual representation of active bookings
 
-3. Open the command pallette from the View menu (or cmd+shift+P / ctrl+shift+P) and run "Codespaces: Connect to Codespace...".
+## Configuration
 
-    > Alternatively, click the button in the very bottom left of VS Code (it says "Open a Remote Window" if you hover over it) and press "Connect to Codespace...".
+### Firebase Configuration
+Update `lib/firebase_options.dart` with your Firebase project settings:
 
-4. Log in if necessary, then select your codespace from the list.
+```dart
+static const FirebaseOptions android = FirebaseOptions(
+  apiKey: 'your-android-api-key',
+  appId: 'your-android-app-id',
+  messagingSenderId: 'your-sender-id',
+  projectId: 'your-project-id',
+  // ... other configurations
+);
+```
 
-## Flutter Development
+### Map Configuration
+The app uses OpenStreetMap tiles by default. No additional API keys required.
 
-### Developing for mobile
+### Notification Configuration
+Ensure proper Firebase Cloud Messaging setup for push notifications.
 
-Running Flutter in Codespaces makes it a bit difficult to run the app in a mobile simulator. However, developing for the web is basically the same as developing for mobile. I'd recommend opening your browser's developer tools and selecting a mobile device to emulate.
+## Contributing
 
-If you're using Chrome or another Chromium-based browser, you can open DevTools like [this](https://developer.chrome.com/docs/devtools/open/) and emulate a device like [this](https://developer.chrome.com/docs/devtools/device-mode/). It'll be pretty similar for other browsers like Safari and Firefox.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-## Codespaces Usage
+## License
 
-### Managing your codespace
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-When you're not using your codespace, deactivate it by going to [Codespaces](https://github.com/codespaces), pressing the 3 dots on the right side of the codespace, and pressing "Stop codespace". You can also deactivate it within the codespace by pressing "Codespaces" at the bottom left of VS Code and selecting "Stop Current Codespace".
+## Support
 
-Edited files in your workspace are not deleted when stopping the codespace and the container won't need to be rebuilt when you start it again. Provided that you're under the storage limit (15 GB for Free users and 20 GB for Pro), you won't be charged if your codespace is offline. I recommend committing your repository changes on your codespace often to avoid losing work if you were to delete your codespace.
+For support and questions, please contact the development team.
+
+## Future Enhancements
+
+- **Video Consultation**: Integration for virtual appointments
+- **Multi-language Support**: Localization for different languages
+- **Advanced Analytics**: Detailed provider performance metrics
+- **Integration APIs**: Healthcare system integration
+- **Offline Mode**: Support for offline functionality
+- **Chat System**: In-app messaging with patients

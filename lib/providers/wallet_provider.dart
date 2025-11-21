@@ -288,11 +288,11 @@ extension PaymentStatusExtension on PaymentStatus {
   Color get color {
     switch (this) {
       case PaymentStatus.pending:
-        return const Color(0xFFFFA726);
+        return Color(0xFFFFA726);
       case PaymentStatus.completed:
-        return const Color(0xFF66BB6A);
+        return Color(0xFF66BB6A);
       case PaymentStatus.failed:
-        return const Color(0xFFEF5350);
+        return Color(0xFFEF5350);
     }
   }
 }

@@ -31,7 +31,9 @@ class HomeScreen extends StatelessWidget {
       body: Consumer2<AuthProvider, BookingProvider>(
         builder: (context, authProvider, bookingProvider, child) {
           return RefreshIndicator(
-            onRefresh: () => bookingProvider.refreshBookings(),
+          onRefresh: () async {
+            await bookingProvider.refreshBookings();
+          },
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(

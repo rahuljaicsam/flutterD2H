@@ -103,7 +103,8 @@ class _BookingListScreenState extends State<BookingListScreen>
     return RefreshIndicator(
       onRefresh: () {
         final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
-        return bookingProvider.refreshBookings();
+        await bookingProvider.refreshBookings();
+        return;
       },
       child: ListView.builder(
         padding: const EdgeInsets.all(16),

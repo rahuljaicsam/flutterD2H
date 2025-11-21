@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 enum ProviderType {
   doctor(Color(0xFF42A5F5)),

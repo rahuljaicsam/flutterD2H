@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/booking_model.dart';
 import '../../providers/booking_provider.dart';
 import '../../providers/wallet_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookingDetailScreen extends StatefulWidget {
   final String bookingId;

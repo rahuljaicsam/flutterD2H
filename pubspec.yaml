@@ -20,12 +20,15 @@ dependencies:
   provider: ^6.1.1
   flutter_riverpod: ^2.4.9
   
-  # Firebase & Authentication
+  # Use compatible Firebase versions
   firebase_core: ^2.24.2
   firebase_auth: ^4.15.3
-  cloud_firestore: ^4.13.6
-  firebase_messaging: ^14.7.6
+  firebase_messaging: ^14.7.10
   firebase_storage: ^11.5.6
+  
+  # Add other required packages
+  go_router: ^12.1.3
+  url_launcher: ^6.2.4
   
   # Maps & Location
   flutter_map: ^6.1.0

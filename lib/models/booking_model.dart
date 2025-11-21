@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'provider_type.dart';
+
 class Booking {
   final String id;
   final String patientId;
@@ -178,3 +181,4 @@ extension BookingStatusExtension on BookingStatus {
     }
   }
 }
+

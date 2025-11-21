@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../models/booking_model.dart';
 import '../../providers/booking_provider.dart';
 import '../../providers/wallet_provider.dart';
@@ -29,9 +28,10 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
   }
 
   Future<void> _loadBookingDetails() async {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
     final booking = await bookingProvider.getBookingById(widget.bookingId);
-    
+
     setState(() {
       _booking = booking;
       _isLoading = false;
@@ -276,7 +276,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, {bool isPhone = false, bool isMap = false}) {
+  Widget _buildInfoRow(String label, String value,
+      {bool isPhone = false, bool isMap = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -308,7 +309,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.phone, size: 16, color: Color(0xFF4A90E2)),
+                        const Icon(Icons.phone,
+                            size: 16, color: Color(0xFF4A90E2)),
                       ],
                     ),
                   )
@@ -326,7 +328,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            const Icon(Icons.map, size: 16, color: Color(0xFF4A90E2)),
+                            const Icon(Icons.map,
+                                size: 16, color: Color(0xFF4A90E2)),
                           ],
                         ),
                       )
@@ -417,9 +420,10 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
   }
 
   Future<void> _startBooking() async {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
     final success = await bookingProvider.startBooking(_booking!.id);
-    
+
     if (success) {
       await _loadBookingDetails();
       if (mounted) {
@@ -434,7 +438,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(bookingProvider.errorMessage ?? 'Failed to start visit'),
+            content:
+                Text(bookingProvider.errorMessage ?? 'Failed to start visit'),
             backgroundColor: Colors.red,
           ),
         );
@@ -443,11 +448,12 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
   }
 
   Future<void> _completeBooking() async {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
     final walletProvider = Provider.of<WalletProvider>(context, listen: false);
-    
+
     final success = await bookingProvider.completeBooking(_booking!.id);
-    
+
     if (success) {
       await walletProvider.addPaymentFromBooking(_booking!);
       await _loadBookingDetails();
@@ -463,7 +469,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(bookingProvider.errorMessage ?? 'Failed to complete visit'),
+            content: Text(
+                bookingProvider.errorMessage ?? 'Failed to complete visit'),
             backgroundColor: Colors.red,
           ),
         );

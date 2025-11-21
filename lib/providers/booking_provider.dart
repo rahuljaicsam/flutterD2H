@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class BookingProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   List<Booking> _bookings = [];
   List<Booking> _pendingBookings = [];
   bool _isLoading = false;
@@ -38,9 +38,8 @@ class BookingProvider extends ChangeNotifier {
           .orderBy('createdAt', descending: true)
           .get();
 
-      _bookings = snapshot.docs
-          .map((doc) => Booking.fromMap(doc.data()))
-          .toList();
+      _bookings =
+          snapshot.docs.map((doc) => Booking.fromMap(doc.data())).toList();
 
       _pendingBookings = _bookings
           .where((booking) => booking.status == BookingStatus.pending)
@@ -64,9 +63,8 @@ class BookingProvider extends ChangeNotifier {
         .where('providerId', isEqualTo: user.uid)
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Booking.fromMap(doc.data()))
-            .toList());
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Booking.fromMap(doc.data())).toList());
   }
 
   Stream<List<Booking>> get pendingBookingsStream {
@@ -79,9 +77,8 @@ class BookingProvider extends ChangeNotifier {
         .where('status', isEqualTo: 'pending')
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Booking.fromMap(doc.data()))
-            .toList());
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Booking.fromMap(doc.data())).toList());
   }
 
   Future<bool> acceptBooking(String bookingId) async {
@@ -201,7 +198,7 @@ class BookingProvider extends ChangeNotifier {
     final now = DateTime.now();
     return _bookings.where((booking) {
       return booking.scheduledDate.isAfter(now) &&
-             (booking.status == BookingStatus.accepted ||
+          (booking.status == BookingStatus.accepted ||
               booking.status == BookingStatus.pending);
     }).toList();
   }
@@ -220,9 +217,9 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void refreshBookings() {
+  Future<void> refreshBookings() async {
     if (_auth.currentUser != null) {
-      _loadBookings();
+      await _loadBookings();
     }
   }
 }

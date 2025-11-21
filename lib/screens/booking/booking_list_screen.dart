@@ -60,8 +60,9 @@ class _BookingListScreenState extends State<BookingListScreen>
               ),
               _buildBookingsList(
                 bookingProvider.getBookingsByStatus(BookingStatus.completed) +
-                bookingProvider.getBookingsByStatus(BookingStatus.cancelled) +
-                bookingProvider.getBookingsByStatus(BookingStatus.declined),
+                    bookingProvider
+                        .getBookingsByStatus(BookingStatus.cancelled) +
+                    bookingProvider.getBookingsByStatus(BookingStatus.declined),
                 bookingProvider.isLoading,
                 'No booking history',
               ),
@@ -72,7 +73,8 @@ class _BookingListScreenState extends State<BookingListScreen>
     );
   }
 
-  Widget _buildBookingsList(List<Booking> bookings, bool isLoading, String emptyMessage) {
+  Widget _buildBookingsList(
+      List<Booking> bookings, bool isLoading, String emptyMessage) {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -101,8 +103,9 @@ class _BookingListScreenState extends State<BookingListScreen>
     }
 
     return RefreshIndicator(
-      onRefresh: () {
-        final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+      onRefresh: () async {
+        final bookingProvider =
+            Provider.of<BookingProvider>(context, listen: false);
         await bookingProvider.refreshBookings();
         return;
       },

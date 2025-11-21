@@ -2,12 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/provider_model.dart';
+import '../models/provider_type.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+
   HealthcareProvider? _provider;
   bool _isLoading = false;
   String? _errorMessage;
@@ -32,7 +33,8 @@ class AuthProvider extends ChangeNotifier {
     try {
       final user = _auth.currentUser;
       if (user != null) {
-        final doc = await _firestore.collection('providers').doc(user.uid).get();
+        final doc =
+            await _firestore.collection('providers').doc(user.uid).get();
         if (doc.exists) {
           _provider = HealthcareProvider.fromMap(doc.data()!);
           notifyListeners();
@@ -48,7 +50,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       _setLoading(true);
       _errorMessage = null;
-      
+
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return true;
     } on FirebaseAuthException catch (e) {

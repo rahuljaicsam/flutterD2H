@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'provider_type.dart';
 
 class Booking {
@@ -54,7 +55,9 @@ class Booking {
         orElse: () => ProviderType.doctor,
       ),
       service: map['service'] ?? '',
-      scheduledDate: map['scheduledDate']?.toDate() ?? DateTime.now(),
+      scheduledDate: map['scheduledDate'] is Timestamp
+          ? (map['scheduledDate'] as Timestamp).toDate()
+          : (map['scheduledDate'] ?? DateTime.now()),
       address: map['address'] ?? '',
       patientLocation: Map<String, dynamic>.from(map['patientLocation'] ?? {}),
       status: BookingStatus.values.firstWhere(
@@ -62,11 +65,19 @@ class Booking {
         orElse: () => BookingStatus.pending,
       ),
       amount: (map['amount'] ?? 0.0).toDouble(),
-      createdAt: map['createdAt']?.toDate() ?? DateTime.now(),
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate()
+          : (map['createdAt'] ?? DateTime.now()),
       notes: map['notes'],
-      acceptedAt: map['acceptedAt']?.toDate(),
-      declinedAt: map['declinedAt']?.toDate(),
-      completedAt: map['completedAt']?.toDate(),
+      acceptedAt: map['acceptedAt'] is Timestamp
+          ? (map['acceptedAt'] as Timestamp).toDate()
+          : map['acceptedAt'],
+      declinedAt: map['declinedAt'] is Timestamp
+          ? (map['declinedAt'] as Timestamp).toDate()
+          : map['declinedAt'],
+      completedAt: map['completedAt'] is Timestamp
+          ? (map['completedAt'] as Timestamp).toDate()
+          : map['completedAt'],
       declineReason: map['declineReason'],
     );
   }
@@ -181,4 +192,3 @@ extension BookingStatusExtension on BookingStatus {
     }
   }
 }
-

@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'provider_type.dart';
+
 class HealthcareProvider {
   final String id;
   final String name;
@@ -48,7 +51,9 @@ class HealthcareProvider {
       completedBookings: map['completedBookings'] ?? 0,
       specialization: map['specialization'],
       services: List<String>.from(map['services'] ?? []),
-      createdAt: map['createdAt']?.toDate() ?? DateTime.now(),
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate()
+          : (map['createdAt'] ?? DateTime.now()),
       location: Map<String, dynamic>.from(map['location'] ?? {}),
     );
   }
@@ -70,35 +75,5 @@ class HealthcareProvider {
       'createdAt': createdAt,
       'location': location,
     };
-  }
-}
-
-enum ProviderType {
-  doctor,
-  nurse,
-  physiotherapist,
-}
-
-extension ProviderTypeExtension on ProviderType {
-  String get displayName {
-    switch (this) {
-      case ProviderType.doctor:
-        return 'Doctor';
-      case ProviderType.nurse:
-        return 'Nurse';
-      case ProviderType.physiotherapist:
-        return 'Physiotherapist';
-    }
-  }
-
-  String get iconPath {
-    switch (this) {
-      case ProviderType.doctor:
-        return 'assets/icons/doctor.svg';
-      case ProviderType.nurse:
-        return 'assets/icons/nurse.svg';
-      case ProviderType.physiotherapist:
-        return 'assets/icons/physio.svg';
-    }
   }
 }
